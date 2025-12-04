@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auditica - Music Web App</title>
+    <meta name="description" content="Responsive Music Web App" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#EE4950',
+              secondary: '#F3777D',
+              background: '#171717',
+              surface: '#121212',
+              card: '#1E1E1E',
+              'text-muted': '#AFB6B2',
+              'text-dark': '#49504D',
+              'gray-divider': '#2A2A2A',
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            boxShadow: {
+              'glow': '0 4px 20px rgba(238, 73, 80, 0.4)',
+              'card': '0 10px 30px rgba(0,0,0,0.3)',
+            }
+          }
+        }
+      }
+    </script>
+
+    <!-- Lucide Icons (CDN) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="bg-background text-white font-sans overflow-hidden selection:bg-primary selection:text-white antialiased">
+    
+    <!-- Mobile Overlay (Click to close sidebar) -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden backdrop-blur-sm transition-opacity opacity-0"></div>
+
+    <div id="app" class="h-screen flex flex-col md:flex-row">
+      
+      <!-- Sidebar (Left) -->
+      <aside id="sidebar" class="fixed inset-y-0 left-0 w-[260px] bg-[#1E1E1E] border-r border-gray-divider flex flex-col h-full md:h-[calc(100vh-90px)] overflow-y-auto custom-scrollbar z-50 transform -translate-x-full md:translate-x-0 md:static transition-transform duration-300 shadow-2xl md:shadow-none">
+        <!-- Logo -->
+        <div class="px-8 py-8 flex items-center justify-between mb-2">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-gradient-to-br from-primary to-orange-600 rounded-full flex items-center justify-center shadow-glow relative overflow-hidden group">
+               <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+            </div>
+            <span class="text-[22px] font-bold tracking-tight text-white">auditica</span>
+          </div>
+          <!-- Close button for mobile -->
+          <button id="close-sidebar-btn" class="md:hidden text-text-muted hover:text-white">
+            <i data-lucide="x" class="w-6 h-6"></i>
+          </button>
+        </div>
+
+        <nav class="flex-1 px-6 space-y-8">
+          <!-- Main Menu -->
+          <div class="space-y-2">
+            <p class="px-4 text-xs font-bold text-text-dark uppercase tracking-widest mb-4">Menu</p>
+            
+            <a href="#" id="nav-home" class="nav-link flex items-center gap-4 px-4 py-3 bg-primary text-white rounded-[6px] shadow-glow transition-all hover:shadow-[0_0_25px_rgba(238,73,80,0.6)] hover:scale-[1.02] group relative overflow-hidden active-nav">
+              <div class="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <i data-lucide="home" class="w-5 h-5 fill-white relative z-10"></i>
+              <span class="font-bold text-[14px] relative z-10">Home</span>
+            </a>
+            
+            <a href="#" id="nav-browse" class="nav-link flex items-center gap-4 px-4 py-3 text-text-muted hover:text-white hover:bg-white/5 rounded-[6px] transition-all group">
+              <i data-lucide="layout-grid" class="w-5 h-5 group-hover:text-white transition-colors"></i>
+              <span class="font-medium text-[14px]">Browse</span>
+            </a>
+            <a href="#" id="nav-favorite" class="nav-link flex items-center gap-4 px-4 py-3 text-text-muted hover:text-white hover:bg-white/5 rounded-[6px] transition-all group">
+              <i data-lucide="heart" class="w-5 h-5 group-hover:text-white transition-colors"></i>
+              <span class="font-medium text-[14px]">Favorite</span>
+            </a>
+            <a href="#" id="nav-library" class="nav-link flex items-center gap-4 px-4 py-3 text-text-muted hover:text-white hover:bg-white/5 rounded-[6px] transition-all group">
+              <i data-lucide="headphones" class="w-5 h-5 group-hover:text-white transition-colors"></i>
+              <span class="font-medium text-[14px]">Library</span>
+            </a>
+          </div>
+
+          <!-- Playlist Nav -->
+          <div class="space-y-4 pt-4 border-t border-gray-divider/50">
+            <div class="flex items-center justify-between px-2 text-text-dark uppercase text-xs font-bold tracking-widest mb-2">
+              <span>Playlists</span>
+              <!-- FIX: Wrapped icon in a button to preserve event listener during Lucide transform -->
+              <button id="add-playlist-btn" class="w-5 h-5 flex items-center justify-center cursor-pointer hover:text-white transition-colors bg-white/5 rounded hover:bg-primary border-none outline-none">
+                  <i data-lucide="plus" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <div class="space-y-1" id="playlist-container">
+              <a href="#" data-query="workplace" class="playlist-link flex items-center gap-3 px-4 py-2.5 text-text-muted hover:text-white hover:bg-white/5 rounded-[6px] transition-all group">
+                <i data-lucide="music-2" class="w-4 h-4"></i>
+                <span class="text-[13px]">For workplace</span>
+              </a>
+              <a href="#" data-query="lofi" class="playlist-link block px-4 py-2.5 text-text-muted hover:text-white text-[13px] font-medium transition-colors hover:translate-x-1 duration-200">Lo-Fi Jazz upbeat</a>
+              <a href="#" data-query="focus" class="playlist-link block px-4 py-2.5 text-text-muted hover:text-white text-[13px] font-medium transition-colors hover:translate-x-1 duration-200">Deep Focus</a>
+              <a href="#" data-query="christmas" class="playlist-link block px-4 py-2.5 text-text-muted hover:text-white text-[13px] font-medium transition-colors hover:translate-x-1 duration-200">Christmas playlist</a>
+              <!-- Dynamic playlists will be added here -->
+            </div>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="flex-1 flex flex-col h-[calc(100vh-90px)] overflow-hidden relative bg-background">
+        <!-- Header / Search -->
+        <header class="absolute top-0 left-0 right-0 z-30 px-6 py-6 md:px-10 pointer-events-none">
+           <div class="flex justify-between items-center pointer-events-auto">
+             <!-- Mobile Menu Button -->
+             <button id="mobile-menu-btn" class="md:hidden p-2 text-white bg-card rounded-lg mr-4 shadow-lg hover:bg-white/10 transition-colors">
+               <i data-lucide="menu" class="w-6 h-6"></i>
+             </button>
+
+             <!-- Search Bar -->
+             <div class="relative w-full max-w-[400px] mx-auto md:mx-0 group">
+               <div class="absolute left-4 top-1/2 -translate-y-1/2 transition-transform group-focus-within:scale-110">
+                 <i data-lucide="search" class="w-4 h-4 text-text-dark group-focus-within:text-primary transition-colors"></i>
+               </div>
+               <input type="text" id="search-input" placeholder="Search artists, songs, albums..." class="w-full bg-[#1E1E1E] text-white placeholder-text-dark/70 pl-11 pr-12 py-3 rounded-full shadow-lg border border-transparent focus:border-primary/30 focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all text-[14px] font-medium">
+               <div id="voice-search-btn" class="absolute right-2 top-1/2 -translate-y-1/2 bg-[#2A2A2A] p-1.5 rounded-full cursor-pointer hover:bg-primary hover:text-white transition-colors group">
+                 <i data-lucide="mic" class="w-3.5 h-3.5 text-text-muted group-hover:text-white fill-current transition-colors"></i>
+               </div>
+             </div>
+             
+             <!-- User Profile -->
+             <div class="hidden md:flex items-center gap-4">
+                <button class="w-10 h-10 rounded-full bg-[#1E1E1E] flex items-center justify-center hover:bg-white/10 transition-colors">
+                    <i data-lucide="bell" class="w-5 h-5 text-text-muted"></i>
+                </button>
+             </div>
+           </div>
+        </header>
+
+        <!-- Scrollable Content Container -->
+        <div id="main-view" class="flex-1 overflow-y-auto custom-scrollbar pb-32 pt-24 md:pt-8 px-6 md:px-10 space-y-12">
+          <!-- Content will be injected here by JavaScript -->
+        </div>
+      </main>
+
+      <!-- Right Sidebar (Top Streams) -->
+      <aside class="hidden xl:flex flex-col w-[320px] bg-[#1E1E1E] border-l border-gray-divider flex-shrink-0 h-[calc(100vh-90px)] overflow-y-auto custom-scrollbar p-8 shadow-[-10px_0_40px_rgba(0,0,0,0.3)] z-20">
+        <div class="flex items-center justify-between mb-8">
+          <h3 class="text-[20px] font-bold text-white tracking-tight">Top Streams Real-time</h3>
+        </div>
+        
+        <!-- Toggle -->
+        <div class="bg-[#2A2A2A] p-1.5 rounded-[8px] flex mb-8 w-full max-w-[180px] ml-auto border border-white/5">
+          <button id="ts-local" class="flex-1 bg-primary text-white text-[11px] font-bold uppercase tracking-wider py-1.5 rounded-[6px] shadow-md transition-all">Local</button>
+          <button id="ts-global" class="flex-1 text-text-muted text-[11px] font-bold uppercase tracking-wider py-1.5 hover:text-white transition-colors rounded-[6px]">Global</button>
+        </div>
+
+        <div class="space-y-5" id="top-streams-container">
+           <!-- Injected via JS -->
+        </div>
+        
+        <div class="mt-auto pt-8 text-center">
+           <button id="expand-streams-btn" class="text-text-muted text-sm font-bold flex items-center justify-center gap-2 hover:text-white transition-colors w-full group py-3 rounded-lg hover:bg-white/5">
+             <span id="expand-text">Expand</span> 
+             <i id="expand-icon" data-lucide="chevron-down" class="w-4 h-4 group-hover:translate-y-1 transition-transform"></i>
+           </button>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Player Bar -->
+    <footer class="fixed bottom-0 left-0 right-0 h-[90px] bg-[#121212]/95 backdrop-blur-2xl border-t border-white/5 z-[60] px-4 md:px-10 flex items-center justify-between shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+      
+      <!-- Song Info (Left) - Flexible width on mobile -->
+      <div class="flex items-center gap-3 md:gap-5 w-auto md:w-1/4 md:min-w-[260px] flex-1 md:flex-none overflow-hidden">
+        <div class="w-[48px] h-[48px] md:w-[64px] md:h-[64px] rounded-[8px] overflow-hidden relative group cursor-pointer shadow-lg ring-1 ring-white/10 flex-shrink-0">
+           <img id="player-img" src="https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://placehold.co/100x100/1E1E1E/FFF?text=Music" alt="Current Song" class="w-full h-full object-cover">
+           <div class="absolute inset-0 bg-black/40 hidden group-hover:flex items-center justify-center backdrop-blur-sm transition-all">
+             <i data-lucide="maximize-2" class="w-5 h-5 text-white"></i>
+           </div>
+        </div>
+        <!-- Text info - Truncate on mobile -->
+        <div class="min-w-0 flex-1">
+          <h4 id="player-title" class="text-white font-bold text-[14px] md:text-[16px] leading-tight truncate pr-2">Select a song</h4>
+          <p id="player-artist" class="text-text-muted text-[12px] md:text-[13px] hover:text-white transition-colors cursor-pointer truncate mt-0.5 md:mt-1">to start playing</p>
+        </div>
+        <div class="flex items-center gap-3 ml-1 md:ml-2 flex-shrink-0">
+           <button id="player-like-btn" class="text-text-muted hover:text-primary transition-colors p-1.5 hover:bg-white/5 rounded-full">
+             <i data-lucide="heart" class="w-4 h-4 fill-current"></i>
+           </button>
+        </div>
+      </div>
+
+      <!-- Controls (Center) - Simplified on mobile -->
+      <div class="flex flex-col items-center justify-center w-auto md:flex-1 md:max-w-2xl px-2 md:px-8">
+        <div class="flex items-center gap-4 md:gap-6 mb-1 md:mb-2">
+          <!-- Shuffle (Hidden on mobile) -->
+          <button id="shuffle-btn" class="hidden md:block text-text-muted hover:text-white transition-colors"><i data-lucide="shuffle" class="w-4 h-4"></i></button>
+          
+          <button id="skip-back-btn" class="text-white hover:text-primary transition-colors hover:scale-110"><i data-lucide="skip-back" class="w-5 h-5 fill-current"></i></button>
+          
+          <button id="main-play-btn" class="w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center hover:scale-105 transition-transform bg-white text-black hover:bg-primary hover:text-white shadow-[0_0_15px_rgba(255,255,255,0.3)] hover:shadow-[0_0_20px_rgba(238,73,80,0.5)]">
+            <i data-lucide="play" class="w-5 h-5 fill-current ml-1"></i>
+          </button>
+          
+          <button id="skip-forward-btn" class="text-white hover:text-primary transition-colors hover:scale-110"><i data-lucide="skip-forward" class="w-5 h-5 fill-current"></i></button>
+          
+          <!-- Repeat (Hidden on mobile) -->
+          <button id="repeat-btn" class="hidden md:block text-text-muted hover:text-white transition-colors"><i data-lucide="repeat" class="w-4 h-4"></i></button>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="w-full flex items-center gap-3 text-[11px] font-bold text-text-muted tracking-wide hidden md:flex">
+          <span class="current-time w-8 text-right">0:00</span>
+          <div class="flex-1 h-1.5 bg-[#2A2A2A] rounded-full overflow-hidden cursor-pointer group progress-bar">
+            <div class="progress-fill w-0 h-full bg-primary relative group-hover:bg-red-500 transition-all shadow-[0_0_12px_#EE4950]">
+               <div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </div>
+          </div>
+          <span class="duration-time w-8">0:30</span>
+        </div>
+      </div>
+
+      <!-- Volume / Extra (Right) - Hidden on mobile -->
+      <div class="hidden md:flex w-1/4 min-w-[150px] items-center justify-end gap-4">
+         <div class="flex items-center gap-3 w-36 group">
+           <i id="volume-icon" data-lucide="volume-2" class="w-5 h-5 text-text-muted group-hover:text-white transition-colors cursor-pointer"></i>
+           <!-- Real Range Input for Volume -->
+           <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1" 
+                  class="w-full h-1.5 bg-[#2A2A2A] rounded-lg appearance-none cursor-pointer accent-white hover:accent-primary transition-all">
+         </div>
+      </div>
+      
+      <!-- Mobile Progress Bar (Absolute top) -->
+      <div class="md:hidden absolute top-0 left-0 right-0 h-1 bg-[#2A2A2A] cursor-pointer progress-bar">
+         <div class="progress-fill w-0 h-full bg-primary"></div>
+      </div>
+    </footer>
+
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
