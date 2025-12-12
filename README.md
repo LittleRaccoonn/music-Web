@@ -96,7 +96,7 @@ npm run build
 3. Сайт будет доступен по адресу:
 
 ```
-https://your-username.github.io/music-Web
+https://littleraccoonn.github.io/music-Web/
 ```
 
 ---
