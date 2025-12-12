@@ -1,9 +1,198 @@
-# Project Setup
-    
-    To run this project, follow these steps:
-    
-    1. Extract the zip file.
-    2. Run `npm install` to install dependencies.
-    3. Run `npm run dev` to start the development server.
-    
-    This project was generated through Alpha. For more information, visit [dualite.dev](https://dualite.dev).
+# **Auditica — Music Web App**
+
+Современное веб-приложение для прослушивания музыки с красивым интерфейсом и удобным управлением.
+
+![Auditica](https://img.shields.io/badge/Version-1.0.0-purple)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v3.4.1-blue)
+![Vite](https://img.shields.io/badge/Vite-v6.3.5-green)
+
+## Особенности
+
+* **Поиск музыки**
+* **Воспроизведение песен**
+* **Плейлисты**
+* **Избранные треки**
+* **Рекомендации и категории**
+* **Реальный плеер с прогресс-баром**
+* **Адаптивный интерфейс**
+
+## Демо
+
+[Посмотреть живую демонстрацию](#)
+https://www.figma.com/design/pJtj9jaz7IDuOW0sDKZedT/Auditica---Responsive-Music-Web-App--Community-?node-id=6-659&t=UO8q4J2WfuLVjzhU-1
+
+---
+
+## Установка и запуск
+
+### Предварительные требования
+
+* Node.js (версия 14+)
+* Веб-браузер с поддержкой ES Modules
+* Доступ в интернет (для API и CDN)
+
+---
+
+### Способ 1: Локальный запуск с Vite
+
+1. Клонируйте репозиторий:
+
+```bash
+git clone https://github.com/LittleRaccoonn/music-Web.git
+```
+
+2. Перейдите в папку проекта:
+
+```bash
+cd music-Web
+```
+
+3. Установите зависимости:
+
+```bash
+npm install
+```
+
+4. Запустите дев-сервер:
+
+```bash
+npm run dev
+```
+
+5. Откройте в браузере:
+
+```
+http://localhost:5173
+```
+
+---
+
+### Способ 2: Сборка и предпросмотр
+
+1. Сделайте билд:
+
+```bash
+npm run build
+```
+
+2. Просмотр готового билда:
+
+```bash
+npm run preview
+```
+
+---
+
+### Способ 3: Деплой на GitHub Pages
+
+1. Соберите проект:
+
+```bash
+npm run build
+```
+
+2. Загрузите папку `dist/` в ветку или через сервис Pages.
+3. Сайт будет доступен по адресу:
+
+```
+https://your-username.github.io/music-Web
+```
+
+---
+
+## Структура проекта
+
+```
+music-Web/
+├── index.html                  # Главный HTML файл
+├── style.css                  # Дополнительные стили
+├── main.js                    # Основной JS (логика приложения)
+├── src/
+│   ├── data.js                # Данные категорий
+│   └── ...                    # Остальные модули
+├── package.json               # Конфигурация npm
+├── tailwind.config.cjs        # Tailwind конфиг
+├── postcss.config.cjs         # PostCSS конфиг
+└── README.md                  # Этот файл
+```
+
+---
+
+## Используемые технологии
+
+### Frontend
+
+* **HTML5** — семантическая разметка
+* **CSS3 / TailwindCSS** — стили и адаптив (было пару проблем, приходилось некоторые моменты делать через ии)
+* **JavaScript (ES6+)** — логика приложения
+* **Vite** — сборка и дев-сервер (было пару проблем, приходилось некоторые моменты делать через ии)
+* **Lucide Icons** — иконки 
+
+### API
+
+* **iTunes Search API** — поиск треков (preview, метаданные)
+
+---
+
+## Функции
+
+### Основные функции
+
+* **Поиск музыки** по запросу
+* **Музыкальный плеер** с кнопками управления
+* **Плейлисты** (включая пользовательские)
+* **Избранные треки (Favorites)**
+* **Категории и жанры**
+* **Recently played**
+* **Top Streams (локальные/глобальные)**
+
+### Интерфейс
+
+* **Навигационная боковая панель**
+* **Главный экран с рекомендациями**
+* **Разделы: Home, Browse, Favorite, Library**
+* **Секции New Releases, You May Like**
+* **Панель плеера снизу с прогресс-баром и громкостью**
+
+---
+
+## Использование
+
+1. Откройте приложение в браузере.
+2. Введите запрос в строку поиска.
+3. Нажмите Enter или выберите трек.
+4. Управляйте воспроизведением.
+5. Сохраняйте в избранное, создавайте плейлисты.
+
+---
+
+## Примеры запросов для тестирования
+
+* `Adele`
+* `Drake`
+* `Lo-fi beats`
+* `Classical`
+
+---
+
+## Разработка
+
+
+
+## Локальная разработка
+
+```bash
+npm install
+npm run dev
+```
+
+---
+
+
+## API и лицензии
+
+**iTunes Search API**
+Приложение использует iTunes Search API для получения данных о треках и превью.
+Прослушивание осуществляется через предоставленный preview URL — без сохранения треков.
+
