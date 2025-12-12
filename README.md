@@ -39,7 +39,7 @@ https://www.figma.com/design/pJtj9jaz7IDuOW0sDKZedT/Auditica---Responsive-Music-
 1. Клонируйте репозиторий:
 
 ```bash
-git clone https://github.com/LittleRaccoonn/music-Web.git
+https://github.com/LittleRaccoonn/music-Web
 ```
 
 2. Перейдите в папку проекта:
